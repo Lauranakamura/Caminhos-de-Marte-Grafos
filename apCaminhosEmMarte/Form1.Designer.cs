@@ -30,7 +30,7 @@
     {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCaminhos));
             this.dlgAbrir = new System.Windows.Forms.OpenFileDialog();
-            this.udY = new System.Windows.Forms.TabControl();
+            this.tbCaminhosEmMarte = new System.Windows.Forms.TabControl();
             this.tpCidades = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -38,7 +38,7 @@
             this.btnInserir = new System.Windows.Forms.Button();
             this.lsbListagem = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.udY = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.udX = new System.Windows.Forms.NumericUpDown();
             this.txtNome = new System.Windows.Forms.TextBox();
@@ -51,9 +51,9 @@
             this.rbSondagemLinear = new System.Windows.Forms.RadioButton();
             this.rbBucketHash = new System.Windows.Forms.RadioButton();
             this.tpCaminhos = new System.Windows.Forms.TabPage();
-            this.udY.SuspendLayout();
+            this.tbCaminhosEmMarte.SuspendLayout();
             this.tpCidades.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -64,15 +64,15 @@
             this.dlgAbrir.DefaultExt = "*.txt";
             this.dlgAbrir.InitialDirectory = "c:\\temp";
             // 
-            // udY
+            // tbCaminhosEmMarte
             // 
-            this.udY.Controls.Add(this.tpCidades);
-            this.udY.Controls.Add(this.tpCaminhos);
-            this.udY.Location = new System.Drawing.Point(1, 0);
-            this.udY.Name = "udY";
-            this.udY.SelectedIndex = 0;
-            this.udY.Size = new System.Drawing.Size(783, 460);
-            this.udY.TabIndex = 2;
+            this.tbCaminhosEmMarte.Controls.Add(this.tpCidades);
+            this.tbCaminhosEmMarte.Controls.Add(this.tpCaminhos);
+            this.tbCaminhosEmMarte.Location = new System.Drawing.Point(1, 0);
+            this.tbCaminhosEmMarte.Name = "tbCaminhosEmMarte";
+            this.tbCaminhosEmMarte.SelectedIndex = 0;
+            this.tbCaminhosEmMarte.Size = new System.Drawing.Size(783, 460);
+            this.tbCaminhosEmMarte.TabIndex = 2;
             // 
             // tpCidades
             // 
@@ -82,7 +82,7 @@
             this.tpCidades.Controls.Add(this.btnInserir);
             this.tpCidades.Controls.Add(this.lsbListagem);
             this.tpCidades.Controls.Add(this.label3);
-            this.tpCidades.Controls.Add(this.numericUpDown1);
+            this.tpCidades.Controls.Add(this.udY);
             this.tpCidades.Controls.Add(this.label2);
             this.tpCidades.Controls.Add(this.udX);
             this.tpCidades.Controls.Add(this.txtNome);
@@ -114,6 +114,7 @@
             this.btnBuscar.Size = new System.Drawing.Size(28, 23);
             this.btnBuscar.TabIndex = 13;
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnRemover
             // 
@@ -123,6 +124,7 @@
             this.btnRemover.TabIndex = 12;
             this.btnRemover.Text = "-";
             this.btnRemover.UseVisualStyleBackColor = true;
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
             // btnInserir
             // 
@@ -132,6 +134,7 @@
             this.btnInserir.TabIndex = 11;
             this.btnInserir.Text = "+";
             this.btnInserir.UseVisualStyleBackColor = true;
+            this.btnInserir.Click += new System.EventHandler(this.btnInserir_Click);
             // 
             // lsbListagem
             // 
@@ -152,13 +155,13 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Y:";
             // 
-            // numericUpDown1
+            // udY
             // 
-            this.numericUpDown1.DecimalPlaces = 5;
-            this.numericUpDown1.Location = new System.Drawing.Point(62, 118);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(64, 20);
-            this.numericUpDown1.TabIndex = 8;
+            this.udY.DecimalPlaces = 5;
+            this.udY.Location = new System.Drawing.Point(62, 118);
+            this.udY.Name = "udY";
+            this.udY.Size = new System.Drawing.Size(64, 20);
+            this.udY.TabIndex = 8;
             // 
             // label2
             // 
@@ -291,15 +294,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(781, 457);
-            this.Controls.Add(this.udY);
+            this.Controls.Add(this.tbCaminhosEmMarte);
             this.Name = "FrmCaminhos";
             this.Text = "Caminhos Em Marte";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmCaminhos_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.udY.ResumeLayout(false);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmCaminhos_Paint);
+            this.tbCaminhosEmMarte.ResumeLayout(false);
             this.tpCidades.ResumeLayout(false);
             this.tpCidades.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMapa)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -311,7 +315,7 @@
     #endregion
 
     private System.Windows.Forms.OpenFileDialog dlgAbrir;
-    private System.Windows.Forms.TabControl udY;
+    private System.Windows.Forms.TabControl tbCaminhosEmMarte;
     private System.Windows.Forms.TabPage tpCidades;
     private System.Windows.Forms.PictureBox pbMapa;
     private System.Windows.Forms.GroupBox groupBox1;
@@ -324,7 +328,7 @@
     private System.Windows.Forms.TextBox txtNome;
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.Label label3;
-    private System.Windows.Forms.NumericUpDown numericUpDown1;
+    private System.Windows.Forms.NumericUpDown udY;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.NumericUpDown udX;
     private System.Windows.Forms.Button btnRemover;
