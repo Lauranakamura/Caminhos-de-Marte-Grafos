@@ -10,15 +10,12 @@ namespace apCaminhosEmMarte
 {
     public partial class FrmCaminhos : Form
     {
-
-        ArrayList arrayCidade;
-        ITabelaDeHash<Cidade> cidade;
+        ITabelaDeHash<Cidade> tabelaDeHash;
         public FrmCaminhos()
         {
             InitializeComponent();
         }
 
-        ITabelaDeHash<Cidade> tabelaDeHash;
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -29,46 +26,20 @@ namespace apCaminhosEmMarte
             dlgAbrir.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             if (dlgAbrir.ShowDialog() == DialogResult.OK)
             {
-                if (rbBucketHash.Checked)
-                {
-                    tabelaDeHash = new BucketHash<Cidade>();
+                if (rbBucketHash.Checked)              tabelaDeHash = new BucketHash<Cidade>();
+                else if (rbSondagemLinear.Checked)     tabelaDeHash = new HashLinear<Cidade>();
+                else if (rbSondagemQuadratica.Checked) tabelaDeHash = new HashQuadratico<Cidade>();
+                //else if (rbHashDuplo.Checked)        tabelaDeHash = new HashDublo<Cidade>();
 
-                    var arqCidades = new StreamReader(dlgAbrir.FileName);
+                var arqCidades = new StreamReader(dlgAbrir.FileName);
 
-                    while (!arqCidades.EndOfStream)
-                    {
-                        Cidade cidade = new Cidade().LerRegistro(arqCidades);
-                        tabelaDeHash.Inserir(cidade);
-                        arrayCidade.Add(cidade); // Adiciona a cidade ao array para posterior uso
-                        lsbListagem.Items.Add(cidade.nome);
-                    }
-                    arqCidades.Close();
-                    pbMapa.Invalidate(); // Redesenha o mapa
+                while (!arqCidades.EndOfStream) {
+                    Cidade cidade = new Cidade();
+                    cidade.LerRegistro(arqCidades);
+                    tabelaDeHash.Inserir(cidade);
                 }
-                else if (rbSondagemLinear.Checked)
-                {
-                    tabelaDeHash = new HashLinear<Cidade>();
-                    foreach (Cidade cidade in arrayCidade)
-                    {
-                        tabelaDeHash.Inserir(cidade);
-                    }
-                }
-                else if (rbSondagemQuadratica.Checked)
-                {
-                    //tabelaDeHash = new HashQuadratico<Cidade>();
-                    //foreach (Cidade cidade in arrayCidade)
-                    //{
-                    //    tabelaDeHash.Inserir(cidade);
-                    //}
-                }
-                else if (rbHashDuplo.Checked)
-                {
-                    //tabelaDeHash = new HashDuplo<Cidade>();
-                    //foreach (Cidade cidade in arrayCidade)
-                    //{
-                    //    tabelaDeHash.Inserir(cidade);
-                    //}
-                }
+                arqCidades.Close();
+                pbMapa.Invalidate(); 
             }
             else
             {
@@ -80,12 +51,20 @@ namespace apCaminhosEmMarte
 
         private void FrmCaminhos_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //string arq = null;
+            //StreamWriter sw = new StreamWriter(arq);
 
+            //if (arq != null) {
+            //    foreach(Cidade item in tabelaDeHash.Conteudo()) {
+            //        item.EscreverRegistro(sw);
+            //    }
+            //    sw.Close();
+            //}
         }
 
         private void lsbListagem_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void FrmCaminhos_Paint(object sender, PaintEventArgs e)
@@ -93,7 +72,7 @@ namespace apCaminhosEmMarte
             if (tabelaDeHash != null)
             {
                 Graphics g = e.Graphics;
-                foreach (Cidade cidade in arrayCidade)
+                foreach (Cidade cidade in tabelaDeHash.Conteudo())
                 {
                     double x = (cidade.x * pbMapa.Width) / 4096; // Largura original do mapa
                     double y = (cidade.y * pbMapa.Height) / 2048; // Altura original do mapa
@@ -116,59 +95,63 @@ namespace apCaminhosEmMarte
 
         private void btnInserir_Click(object sender, EventArgs e)
         {
-            string nome = txtNome.Text;
-            double x = Convert.ToDouble(udX.Value);
-            double y = Convert.ToDouble(udY.Value);
+            Cidade cidade = new Cidade();
 
-            Cidade novaCidade = new Cidade();
-            tabelaDeHash.Inserir(novaCidade);
-            arrayCidade.Add(novaCidade);
-            lsbListagem.Items.Add(novaCidade.nome);
-            pbMapa.Invalidate();
+            cidade.nome = txtNome.Text;
+            cidade.x = (double)udX.Value;
+            cidade.y = (double)udY.Value;
+
+            try {
+                tabelaDeHash.Inserir(cidade);
+                pbMapa.Invalidate();
+                Dados();
+            }
+            catch(Exception er) {
+                MessageBox.Show($"Erro: {er.Message}");
+            }
         }
 
         private void btnRemover_Click(object sender, EventArgs e)
         {
-            if (lsbListagem.SelectedIndex != -1)
-            {
-                string nomeCidade = lsbListagem.SelectedItems.ToString();
-                Cidade cidadeARemover = null;
+            Cidade cidade = new Cidade();
 
-                foreach (Cidade cidade in arrayCidade)
-                {
-                    if (cidade.nome == nomeCidade)
-                    {
-                        cidadeARemover = cidade;
-                        break;
-                    }
-                }
+            cidade.nome = txtNome.Text;
+            cidade.x = (double)udX.Value;
+            cidade.y = (double)udY.Value;
+
+            if(tabelaDeHash.Remover(cidade)) {
+                MessageBox.Show("Sucesso ao remover cidade do registro!");
+                
+                pbMapa.Invalidate();
+                Dados();
             }
+            else { MessageBox.Show("Falha ao remover cidade do registro;"); }
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (lsbListagem.SelectedIndex != -1)
-            {
-                string nomeCidade = lsbListagem.SelectedItems.ToString();
-                Cidade cidadeABuscar = null;
+            Cidade cidade = new Cidade();
 
-                foreach (Cidade cidade in arrayCidade)
-                {
-                    if (cidade.nome == nomeCidade)
-                    {
-                        cidadeABuscar = cidade;
-                        break;
-                    }
-                }
-                if (cidadeABuscar != null)
-                {
-                    MessageBox.Show($"Cidade encontrada:\nNome: {cidadeABuscar.nome}\nX: {cidadeABuscar.x}\nY: {cidadeABuscar.y}",
-                                    "Cidade Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Cidade não encontrada.", "Cidade Não Encontrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+            try {
+                cidade = tabelaDeHash.Dado(txtNome.Text);
+                MessageBox.Show("Cidade localizada com sucesso!");
+
+                udX.Value = (decimal)cidade.x;
+                udY.Value = (decimal)cidade.y;
+            }
+            catch(Exception er) {
+                MessageBox.Show("Falha ao buscar cidade!");
+            }
+        }
+
+        private void Dados()
+        {
+            lsbListagem.Items.Clear();
+            var cidades = tabelaDeHash.Conteudo();
+
+            foreach (string cidade in cidades)
+            {
+                lsbListagem.Items.Add(cidade);
             }
         }
     }

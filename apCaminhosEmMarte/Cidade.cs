@@ -10,6 +10,16 @@ public class Cidade : IRegistro<Cidade>,
     public double x, y;
 
     public Cidade() { }  // construtor default
+
+    public string Chave => this.nome;
+    public string Nome { get => nome; set => nome = value; }
+    public double X { get => x; set => x = value; }
+    public double Y { get => y; set => y = value; }
+
+    public override bool Equals(object obj) {
+        return obj is Cidade cidade && Chave == cidade.Chave;
+    }
+
     public Cidade LerRegistro(StreamReader arquivo)
     {
         if (arquivo != null)  // está aberto
@@ -26,13 +36,13 @@ public class Cidade : IRegistro<Cidade>,
     {
         if (arquivo != null)
         {
-            arquivo.WriteLine($"{nome}{x:0.00000}{y:0.00000}");
+            arquivo.WriteLine($"{nome.PadRight(15)}{x:0.00000}{y:0.00000}");
         }
     }
     public int CompareTo(Cidade outra)  // <0, ==0, >0
     {
         return this.nome.CompareTo(outra.nome);
     }
-    public string Chave => this.nome;
+    
 }
 
