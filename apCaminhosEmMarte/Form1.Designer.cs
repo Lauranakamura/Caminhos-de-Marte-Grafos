@@ -32,7 +32,7 @@
             this.dlgAbrir = new System.Windows.Forms.OpenFileDialog();
             this.tbCaminhosEmMarte = new System.Windows.Forms.TabControl();
             this.tpCidades = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnListar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnRemover = new System.Windows.Forms.Button();
             this.btnInserir = new System.Windows.Forms.Button();
@@ -76,7 +76,7 @@
             // 
             // tpCidades
             // 
-            this.tpCidades.Controls.Add(this.button1);
+            this.tpCidades.Controls.Add(this.btnListar);
             this.tpCidades.Controls.Add(this.btnBuscar);
             this.tpCidades.Controls.Add(this.btnRemover);
             this.tpCidades.Controls.Add(this.btnInserir);
@@ -97,15 +97,15 @@
             this.tpCidades.Text = "Cidades";
             this.tpCidades.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnListar
             // 
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(114, 144);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(28, 23);
-            this.button1.TabIndex = 14;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnListar.Image = ((System.Drawing.Image)(resources.GetObject("btnListar.Image")));
+            this.btnListar.Location = new System.Drawing.Point(114, 144);
+            this.btnListar.Name = "btnListar";
+            this.btnListar.Size = new System.Drawing.Size(28, 23);
+            this.btnListar.TabIndex = 14;
+            this.btnListar.UseVisualStyleBackColor = true;
+            this.btnListar.Click += new System.EventHandler(this.btnListar_Click);
             // 
             // btnBuscar
             // 
@@ -160,6 +160,11 @@
             // 
             this.udY.DecimalPlaces = 5;
             this.udY.Location = new System.Drawing.Point(62, 118);
+            this.udY.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
             this.udY.Name = "udY";
             this.udY.Size = new System.Drawing.Size(64, 20);
             this.udY.TabIndex = 8;
@@ -177,6 +182,11 @@
             // 
             this.udX.DecimalPlaces = 5;
             this.udX.Location = new System.Drawing.Point(62, 89);
+            this.udX.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
             this.udX.Name = "udX";
             this.udX.Size = new System.Drawing.Size(64, 20);
             this.udX.TabIndex = 6;
@@ -206,17 +216,18 @@
             this.pbMapa.Image = ((System.Drawing.Image)(resources.GetObject("pbMapa.Image")));
             this.pbMapa.Location = new System.Drawing.Point(186, 63);
             this.pbMapa.Name = "pbMapa";
-            this.pbMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMapa_Paint);
             this.pbMapa.Size = new System.Drawing.Size(587, 369);
             this.pbMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMapa.TabIndex = 3;
             this.pbMapa.TabStop = false;
+            this.pbMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMapa_Paint);
+            this.pbMapa.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbMapa_MouseUp);
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.groupBox1.Controls.Add(this.btnAbrirArquivo);
             this.groupBox1.Controls.Add(this.rbHashDuplo);
             this.groupBox1.Controls.Add(this.rbSondagemQuadratica);
@@ -336,7 +347,7 @@
     private System.Windows.Forms.Button btnInserir;
     private System.Windows.Forms.ListBox lsbListagem;
     private System.Windows.Forms.Button btnBuscar;
-    private System.Windows.Forms.Button button1;
+    private System.Windows.Forms.Button btnListar;
   }
 }
 

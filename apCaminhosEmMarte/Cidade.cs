@@ -25,7 +25,8 @@ public class Cidade : IRegistro<Cidade>,
         if (arquivo != null)  // está aberto
         {
             string linha = arquivo.ReadLine(); // lê uma linha
-            nome = linha.Substring(0, 15).Trim();  // (inicio, quantos)
+            nome = linha.Substring(0, 15);  // (inicio, quantos)
+            nome = nome.Trim();
             x = double.Parse(linha.Substring(15, 7));
             y = double.Parse(linha.Substring(22, 7));
             return this;

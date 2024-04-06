@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -31,7 +32,7 @@ namespace apCaminhosEmMarte
                 if (rbBucketHash.Checked)              tabelaDeHash = new BucketHash<Cidade>();
                 else if (rbSondagemLinear.Checked)     tabelaDeHash = new HashLinear<Cidade>();
                 else if (rbSondagemQuadratica.Checked) tabelaDeHash = new HashQuadratico<Cidade>();
-                else if (rbHashDuplo.Checked)        tabelaDeHash = new HashDuplo<Cidade>();
+                else if (rbHashDuplo.Checked)          tabelaDeHash = new HashDuplo<Cidade>();
 
                 var arqCidades = new StreamReader(dlgAbrir.FileName);
 
@@ -75,18 +76,31 @@ namespace apCaminhosEmMarte
 
         private void pbMapa_Paint(object sender, PaintEventArgs e)
         {
+            float escalaElipse = 8f; 
             if (tabelaDeHash != null)
             {
                 Graphics g = e.Graphics;
                 foreach (Cidade cidade in tabelaDeHash.ConteudoTipo())
                 {
-                    double x = (cidade.x * pbMapa.Width); // Largura original do mapa
-                    double y = (cidade.y * pbMapa.Height); // Altura original do mapa
+                    double x = (cidade.X * pbMapa.Width); // Largura original do mapa
+                    double y = (cidade.Y * pbMapa.Height); // Altura original do mapa
 
-                    var brush = new SolidBrush(Color.Gray);
+                    Color corInicial = Color.Red;
+                    Color corFinal   = Color.Yellow;
+
+                    LinearGradientBrush brush = new LinearGradientBrush(
+                        //new Point((int)(pbMapa.Width * cidade.X - escalaElipse / 2), (int)(pbMapa.Height * cidade.Y - escalaElipse / 2)),
+                        //new Point((int)(pbMapa.Width * cidade.X + escalaElipse / 2), (int)(pbMapa.Height * cidade.Y + escalaElipse / 2)),
+
+                        new Point((int)x - 3, (int)y - 3), 
+                        new Point((int)x + 3, (int)y + 3),
+                        corInicial,
+                        corFinal
+                    );
+
                     var pen = new Pen(Color.Black, 1);
-                    var rec = new RectangleF((float)x - 3, (float)y - 3, 6, 6);
-                    var font = new Font("Arial", 10);
+                    var rec = new Rectangle((int)x - 3, (int)y - 3, 6, 6);
+                    var font = new Font("Arial", 8f, FontStyle.Bold);
 
                     StringFormat sf = new StringFormat();
                     sf.LineAlignment = StringAlignment.Center;
@@ -94,7 +108,14 @@ namespace apCaminhosEmMarte
 
                     g.FillEllipse(brush, rec);
                     g.DrawEllipse(pen, rec);
-                    g.DrawString(cidade.nome, font, new SolidBrush(Color.Black), (float)x, (float)y - 10, sf);
+                    g.DrawString(cidade.nome, font, new SolidBrush(Color.Black), (int)x, (int)y - 10, sf);
+
+                    //g.FillEllipse(brush, (float)(pbMapa.Width * cidade.X) - escalaElipse / 2,
+                    //(float)(pbMapa.Height * cidade.Y) - escalaElipse / 2, escalaElipse, escalaElipse);
+
+                    //g.DrawString(cidade.Nome, new Font("Arial", 8f, FontStyle.Bold), 
+                    //    new SolidBrush(Color.Black),
+                    //(float)(pbMapa.Width * cidade.X), (float)(pbMapa.Height * cidade.Y));
                 }
             }
         }
@@ -104,8 +125,8 @@ namespace apCaminhosEmMarte
             Cidade cidade = new Cidade();
 
             cidade.nome = txtNome.Text;
-            cidade.x = (double)udX.Value;
-            cidade.y = (double)udY.Value;
+            cidade.X = (double)udX.Value;
+            cidade.Y = (double)udY.Value;
 
             try {
                 tabelaDeHash.Inserir(cidade);
@@ -122,8 +143,8 @@ namespace apCaminhosEmMarte
             Cidade cidade = new Cidade();
 
             cidade.nome = txtNome.Text;
-            cidade.x = (double)udX.Value;
-            cidade.y = (double)udY.Value;
+            cidade.X = (double)udX.Value;
+            cidade.Y = (double)udY.Value;
 
             if(tabelaDeHash.Remover(cidade)) {
                 MessageBox.Show("Sucesso ao remover cidade do registro!");
@@ -142,8 +163,8 @@ namespace apCaminhosEmMarte
                 cidade = tabelaDeHash.Dado(txtNome.Text);
                 MessageBox.Show("Cidade localizada com sucesso!");
 
-                udX.Value = (decimal)cidade.x;
-                udY.Value = (decimal)cidade.y;
+                udX.Value = (decimal)cidade.X;
+                udY.Value = (decimal)cidade.Y;
             }
             catch(Exception er) {
                 MessageBox.Show("Falha ao buscar cidade!");
@@ -161,10 +182,16 @@ namespace apCaminhosEmMarte
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnListar_Click(object sender, EventArgs e)
         {
             Dados();
             pbMapa.Invalidate();
+        }
+
+        private void pbMapa_MouseUp(object sender, MouseEventArgs e)
+        {
+            udX.Value = (decimal)e.X / pbMapa.Width;
+            udY.Value = (decimal)e.Y / pbMapa.Height;
         }
     }
 }
