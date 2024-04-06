@@ -8,10 +8,10 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
       where Tipo : IRegistro<Tipo>, IComparable<Tipo>
 {
 
-    private const int TamanhoTabela = 131; // Tamanho da tabela hash
+    private const int TamanhoTabela = 131; 
 
-    private Tipo[] tabela; // Armazena os itens da tabela hash
-    private bool[] indicesOcupados; // Indica se um índice da tabela está ocupado ou não
+    private Tipo[] tabela; 
+    private bool[] indicesOcupados; 
 
 
     public HashLinear()
@@ -28,7 +28,7 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
         for (int i = 0; i < TamanhoTabela; i++)
         {
             if (tabela[i] != null)
-                conteudo.Add(tabela[i].Chave);
+                conteudo.Add(tabela[i].Chave); //adiciona a chave do elemento a lista
         }
         return conteudo;
     }
@@ -49,16 +49,16 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
 
   bool ITabelaDeHash<Tipo>.Existe(Tipo item, out int onde)
   {
-        onde = Hash(item.Chave);
+        onde = Hash(item.Chave); // calcula a posicao inicial usando o hash da chave
 
         while (indicesOcupados[onde])
         {
-            if (item.Chave == tabela[onde].Chave)
+            if (item.Chave == tabela[onde].Chave) 
             {
-                return true;
+                return true; 
             }
 
-            onde = (onde + 1) % TamanhoTabela; // Avança para o próximo índice usando uma estratégia de Hash Linear
+            onde = (onde + 1) % TamanhoTabela;
         }
 
         return false;
@@ -81,9 +81,9 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
 
         if (((ITabelaDeHash<Tipo>)this).Existe(item, out onde))
         {
-            tabela[onde] = default(Tipo);
-            indicesOcupados[onde] = false;
-            return true;
+            tabela[onde] = default(Tipo);  // remove o item da posição
+            indicesOcupados[onde] = false; // marca o índice como desocupado
+            return true; 
         }
 
         return false;
@@ -91,8 +91,8 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
 
     public Tipo Dado(string chave)
     {
-        int pos = Hash(chave);
-        Tipo dado = tabela[pos];
+        int pos = Hash(chave);   //calcula a posicao na tabela usando da chave
+        Tipo dado = tabela[pos]; //obtem o item na posicao calculada
         if (dado == null)
             throw new Exception("Não foi possivel resgatar dado!");
 
@@ -106,7 +106,7 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
         for (int i = 0; i < TamanhoTabela; i++)
         {
             if (tabela[i] != null)
-                conteudo.Add(tabela[i]);
+                conteudo.Add(tabela[i]); //adiciona o item a lista
         }
         return conteudo;
     }

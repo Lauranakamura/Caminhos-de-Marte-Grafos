@@ -145,7 +145,6 @@
             this.lsbListagem.ScrollAlwaysVisible = true;
             this.lsbListagem.Size = new System.Drawing.Size(171, 173);
             this.lsbListagem.TabIndex = 10;
-            this.lsbListagem.SelectedIndexChanged += new System.EventHandler(this.lsbListagem_SelectedIndexChanged);
             // 
             // label3
             // 

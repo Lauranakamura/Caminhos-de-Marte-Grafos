@@ -13,7 +13,7 @@ namespace apCaminhosEmMarte
     {
         ITabelaDeHash<Cidade> tabelaDeHash;
 
-        string nomeArq = null;
+        string nomeArq = null; //arquivo que iremos utilizar
         public FrmCaminhos()
         {
             InitializeComponent();
@@ -26,23 +26,24 @@ namespace apCaminhosEmMarte
 
         private void btnAbrirArquivo_Click(object sender, EventArgs e)
         {
-            dlgAbrir.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            dlgAbrir.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"; // filtro para facilitar o encontro do arquivo .txt
             if (dlgAbrir.ShowDialog() == DialogResult.OK)
             {
+                //seleção do tipo de Hash com base no RadioButton selecionado
                 if (rbBucketHash.Checked)              tabelaDeHash = new BucketHash<Cidade>();
                 else if (rbSondagemLinear.Checked)     tabelaDeHash = new HashLinear<Cidade>();
                 else if (rbSondagemQuadratica.Checked) tabelaDeHash = new HashQuadratico<Cidade>();
                 else if (rbHashDuplo.Checked)          tabelaDeHash = new HashDuplo<Cidade>();
 
-                var arqCidades = new StreamReader(dlgAbrir.FileName);
+                var arqCidades = new StreamReader(dlgAbrir.FileName); //abertura do arquivo
 
-                while (!arqCidades.EndOfStream) {
+                while (!arqCidades.EndOfStream) { //é lida linha por linha do arquivo .txt selecionado  
                     Cidade cidade = new Cidade();
                     cidade.LerRegistro(arqCidades);
                     tabelaDeHash.Inserir(cidade);
                 }
-                arqCidades.Close();
-                pbMapa.Invalidate();
+                arqCidades.Close(); //É fechado o arquivo apos a leitura 
+                pbMapa.Invalidate(); //redesenha o mapa para exibir as atualizações(caso tenha)
                 nomeArq = dlgAbrir.FileName;
 
             }
@@ -57,6 +58,7 @@ namespace apCaminhosEmMarte
         private void FrmCaminhos_FormClosing(object sender, FormClosingEventArgs e)
         {
           
+            //Salva o arquivo modificado para que as alterações nao sejam perdidaas
             if (nomeArq != null)
             {
                 StreamWriter sw = new StreamWriter(nomeArq);
@@ -67,11 +69,6 @@ namespace apCaminhosEmMarte
                 }
                 sw.Close();
             }
-        }
-
-        private void lsbListagem_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void pbMapa_Paint(object sender, PaintEventArgs e)
@@ -85,13 +82,12 @@ namespace apCaminhosEmMarte
                     double x = (cidade.X * pbMapa.Width); // Largura original do mapa
                     double y = (cidade.Y * pbMapa.Height); // Altura original do mapa
 
+                    //cores definidas para serem usadas no gradiente
                     Color corInicial = Color.Red;
                     Color corFinal   = Color.Yellow;
 
+                    //É criado um gradiente de cor para a elipse
                     LinearGradientBrush brush = new LinearGradientBrush(
-                        //new Point((int)(pbMapa.Width * cidade.X - escalaElipse / 2), (int)(pbMapa.Height * cidade.Y - escalaElipse / 2)),
-                        //new Point((int)(pbMapa.Width * cidade.X + escalaElipse / 2), (int)(pbMapa.Height * cidade.Y + escalaElipse / 2)),
-
                         new Point((int)x - 3, (int)y - 3), 
                         new Point((int)x + 3, (int)y + 3),
                         corInicial,
@@ -102,6 +98,7 @@ namespace apCaminhosEmMarte
                     var rec = new Rectangle((int)x - 3, (int)y - 3, 6, 6);
                     var font = new Font("Arial", 8f, FontStyle.Bold);
 
+                    //É centralizado o texto 
                     StringFormat sf = new StringFormat();
                     sf.LineAlignment = StringAlignment.Center;
                     sf.Alignment = StringAlignment.Center;
@@ -109,19 +106,13 @@ namespace apCaminhosEmMarte
                     g.FillEllipse(brush, rec);
                     g.DrawEllipse(pen, rec);
                     g.DrawString(cidade.nome, font, new SolidBrush(Color.Black), (int)x, (int)y - 10, sf);
-
-                    //g.FillEllipse(brush, (float)(pbMapa.Width * cidade.X) - escalaElipse / 2,
-                    //(float)(pbMapa.Height * cidade.Y) - escalaElipse / 2, escalaElipse, escalaElipse);
-
-                    //g.DrawString(cidade.Nome, new Font("Arial", 8f, FontStyle.Bold), 
-                    //    new SolidBrush(Color.Black),
-                    //(float)(pbMapa.Width * cidade.X), (float)(pbMapa.Height * cidade.Y));
                 }
             }
         }
 
         private void btnInserir_Click(object sender, EventArgs e)
         {
+            // Criamos uma nova cidade com os dados inseridos pelo usuário
             Cidade cidade = new Cidade();
 
             cidade.nome = txtNome.Text;
@@ -129,12 +120,12 @@ namespace apCaminhosEmMarte
             cidade.Y = (double)udY.Value;
 
             try {
-                tabelaDeHash.Inserir(cidade);
-                pbMapa.Invalidate();
-                Dados();
+                tabelaDeHash.Inserir(cidade); // Tentamos inserir a cidade na tabela de hash
+                pbMapa.Invalidate();          // Redesenha o mapa para mostrar a nova cidade
+                Dados();                      // Atualizamos a listagem das cidade
             }
             catch(Exception er) {
-                MessageBox.Show($"Erro: {er.Message}");
+                MessageBox.Show($"Erro: {er.Message}"); // Se houver erro, mostramos uma mensagem
             }
         }
 
@@ -146,13 +137,14 @@ namespace apCaminhosEmMarte
             cidade.X = (double)udX.Value;
             cidade.Y = (double)udY.Value;
 
-            if(tabelaDeHash.Remover(cidade)) {
+            // Tentamos remover a cidade da tabela de hash
+            if (tabelaDeHash.Remover(cidade)) {
                 MessageBox.Show("Sucesso ao remover cidade do registro!");
                 
-                pbMapa.Invalidate();
-                Dados();
+                pbMapa.Invalidate(); //Atualiza o mapa para mostrar as atualizações
+                Dados();             // Atualiza a listagem das cidades
             }
-            else { MessageBox.Show("Falha ao remover cidade do registro;"); }
+            else { MessageBox.Show("Falha ao remover cidade do registro;"); } // Se falhar, mostramos mensagem
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -160,14 +152,15 @@ namespace apCaminhosEmMarte
             Cidade cidade = new Cidade();
 
             try {
-                cidade = tabelaDeHash.Dado(txtNome.Text);
+                cidade = tabelaDeHash.Dado(txtNome.Text); // Tentamos buscar a cidade na tabela de hash
                 MessageBox.Show("Cidade localizada com sucesso!");
 
+                // Exibimos as coordenadas da cidade encontrada
                 udX.Value = (decimal)cidade.X;
                 udY.Value = (decimal)cidade.Y;
             }
             catch(Exception er) {
-                MessageBox.Show("Falha ao buscar cidade!");
+                MessageBox.Show("Falha ao buscar cidade!"); // Se falhar, mostramos mensagem
             }
         }
 
@@ -184,12 +177,13 @@ namespace apCaminhosEmMarte
 
         private void btnListar_Click(object sender, EventArgs e)
         {
-            Dados();
-            pbMapa.Invalidate();
+            Dados();             // Atualizamos a listagem das cidades   
+            pbMapa.Invalidate(); // Redesenha o mapa
         }
 
         private void pbMapa_MouseUp(object sender, MouseEventArgs e)
         {
+            // Atualizamos as coordenadas com a posição onde o mouse foi solto
             udX.Value = (decimal)e.X / pbMapa.Width;
             udY.Value = (decimal)e.Y / pbMapa.Height;
         }

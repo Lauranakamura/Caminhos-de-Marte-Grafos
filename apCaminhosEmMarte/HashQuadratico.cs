@@ -42,7 +42,7 @@ public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
         int aux = 0;
 
         while (info[i] != null && !info[i].Equals(item)) {
-            i = (valorDeHash + (aux * aux)) % tamanho;
+            i = (valorDeHash + (aux * aux)) % tamanho; // Cálculo do próximo índice usando hash quadrático
             aux++;
             if (aux >= tamanho) {
                 onde = -1;
@@ -66,10 +66,10 @@ public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
         int aux = 0;
 
         while(info[i] != null) {
-            i = (valorDeHash + (aux * aux)) % tamanho;
+            i = (valorDeHash + (aux * aux)) % tamanho; // Cálculo do próximo índice usando hash quadrático
             aux++;
         }
-        info[i] = item;
+        info[i] = item; //insere o item na posico calculada
     }
 
     public bool Remover(Tipo item) {
@@ -81,7 +81,7 @@ public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
             }
         }
         if (indice != -1) {
-            info[indice] = default;
+            info[indice] = default(Tipo); // Remove o item da posição
             return true;
         }
         else {
@@ -90,8 +90,8 @@ public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
     }
 
     public Tipo Dado(string chave) {
-        int pos = Hash(chave);
-        Tipo dado = info[pos];
+        int pos = Hash(chave); // calcula a posição na tabela usando o hash da chave
+        Tipo dado = info[pos]; // obtém o item na posição calculada
         if (dado == null)
             throw new Exception("Não foi possivel resgatar dado!");
         
@@ -105,7 +105,7 @@ public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
         for (int i = 0; i < tamanho; i++)
         {
             if (info[i] != null)
-                conteudo.Add(info[i]);
+                conteudo.Add(info[i]); //adiciona o item a lista
         }
         return conteudo;
     }
