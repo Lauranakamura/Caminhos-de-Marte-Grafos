@@ -8,7 +8,7 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
       where Tipo : IRegistro<Tipo>, IComparable<Tipo>
 {
 
-    private const int TamanhoTabela = 100; // Tamanho da tabela hash
+    private const int TamanhoTabela = 131; // Tamanho da tabela hash
 
     private Tipo[] tabela; // Armazena os itens da tabela hash
     private bool[] indicesOcupados; // Indica se um índice da tabela está ocupado ou não
@@ -23,19 +23,28 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
 
     public List<string> Conteudo()
     {
-         throw new NotImplementedException();
+        List<string> conteudo = new List<string>();
+
+        for (int i = 0; i < TamanhoTabela; i++)
+        {
+            if (tabela[i] != null)
+                conteudo.Add(tabela[i].Chave);
+        }
+        return conteudo;
     }
 
   public int Hash(string chave)
   {
-        int somaValores = 0;
+        long tot = 0;
 
-        foreach (char c in chave)
-        {
-            somaValores += (int)c;
-        }
+        for (int i = 0; i < chave.Length; i++)
+            tot += 37 * tot + (char)chave[i];
 
-        return somaValores % TamanhoTabela;
+        tot = tot % tabela.Length;
+        if (tot < 0)
+            tot += tabela.Length;
+
+        return (int)tot;
     }
 
   bool ITabelaDeHash<Tipo>.Existe(Tipo item, out int onde)
@@ -78,6 +87,28 @@ public class HashLinear<Tipo> : ITabelaDeHash<Tipo>
         }
 
         return false;
+    }
+
+    public Tipo Dado(string chave)
+    {
+        int pos = Hash(chave);
+        Tipo dado = tabela[pos];
+        if (dado == null)
+            throw new Exception("Não foi possivel resgatar dado!");
+
+        return dado;
+    }
+
+    public List<Tipo> ConteudoTipo()
+    {
+        List<Tipo> conteudo = new List<Tipo>();
+
+        for (int i = 0; i < TamanhoTabela; i++)
+        {
+            if (tabela[i] != null)
+                conteudo.Add(tabela[i]);
+        }
+        return conteudo;
     }
 }
 

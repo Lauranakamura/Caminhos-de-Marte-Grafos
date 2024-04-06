@@ -105,6 +105,7 @@
             this.button1.Size = new System.Drawing.Size(28, 23);
             this.button1.TabIndex = 14;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnBuscar
             // 
@@ -205,6 +206,7 @@
             this.pbMapa.Image = ((System.Drawing.Image)(resources.GetObject("pbMapa.Image")));
             this.pbMapa.Location = new System.Drawing.Point(186, 63);
             this.pbMapa.Name = "pbMapa";
+            this.pbMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMapa_Paint);
             this.pbMapa.Size = new System.Drawing.Size(587, 369);
             this.pbMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMapa.TabIndex = 3;
@@ -299,7 +301,6 @@
             this.Text = "Caminhos Em Marte";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmCaminhos_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmCaminhos_Paint);
             this.tbCaminhosEmMarte.ResumeLayout(false);
             this.tpCidades.ResumeLayout(false);
             this.tpCidades.PerformLayout();

@@ -5,24 +5,23 @@ using System.Collections.Generic;
 public class HashDuplo<Tipo> : ITabelaDeHash<Tipo>
   where Tipo : IRegistro<Tipo>, IComparable<Tipo>
 {
-    private readonly int tamanho;
+    private readonly int tamanho = 131;
     private readonly Tipo[] tabela;
 
-    public HashDuplo(int tamanho)
+    public HashDuplo()
     {
-        this.tamanho = tamanho;
         this.tabela = new Tipo[tamanho];
     }
 
-    public List<string> Conteudo() // O for está errado
+    public List<string> Conteudo()
     {
         List<string> conteudo = new List<string>();
 
-        for (int i = 0; i == tamanho; i++)
+        for (int i = 0; i < tamanho; i++)
         {
             if (tabela[i] != null)
             {
-                conteudo.Add(tabela[i].ToString());
+                conteudo.Add(tabela[i].Chave);
             }
         }
 
@@ -48,14 +47,19 @@ public class HashDuplo<Tipo> : ITabelaDeHash<Tipo>
         return false;
     }
 
+     
     public int Hash(string chave)
     {
-        int hash = 0;
-        foreach (char c in chave)
-        {
-            hash = (hash + c) % tamanho;
-        }
-        return hash;
+        long tot = 0;
+
+        for (int i = 0; i < chave.Length; i++)
+            tot += 37 * tot + (char)chave[i];
+
+        tot = tot % tabela.Length;
+        if (tot < 0)
+            tot += tabela.Length;
+
+        return (int)tot;
     }
 
     public void Inserir(Tipo item)
@@ -78,15 +82,34 @@ public class HashDuplo<Tipo> : ITabelaDeHash<Tipo>
         return false;
     }
 
-    List<string> ITabelaDeHash<Tipo>.Conteudo()
-    {
-        throw new NotImplementedException();
-    }
+    
 
     private int Incremento(string chave)
     {
         int hashSecundario = 7 - (Hash(chave) % 7);
         return hashSecundario;
+    }
+
+    public Tipo Dado(string chave)
+    {
+        int pos = Hash(chave);
+        Tipo dado = tabela[pos];
+        if (dado == null)
+            throw new Exception("Não foi possivel resgatar dado!");
+
+        return dado;
+    }
+
+    public List<Tipo> ConteudoTipo()
+    {
+        List<Tipo> conteudo = new List<Tipo>();
+
+        for (int i = 0; i < tamanho; i++)
+        {
+            if (tabela[i] != null)
+                conteudo.Add(tabela[i]);
+        }
+        return conteudo;
     }
 }
 

@@ -10,4 +10,5 @@ interface ITabelaDeHash<Tipo>
   bool Existe(Tipo item, out int onde);
   List<string> Conteudo();
   Tipo Dado(string chave);
+  List<Tipo> ConteudoTipo();
 }

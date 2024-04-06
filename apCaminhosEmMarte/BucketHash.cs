@@ -79,4 +79,17 @@ class BucketHash<Tipo> : ITabelaDeHash<Tipo>
         throw new Exception("Não foi possivel obter o dado!");
     }
 
+    public List<Tipo> ConteudoTipo()
+    {
+        List<Tipo> conteudo = new List<Tipo>();
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (dados[i] != null)
+                foreach(Tipo item in dados[i])
+                  conteudo.Add(item);
+        }
+        return conteudo;
+    }
+
 }

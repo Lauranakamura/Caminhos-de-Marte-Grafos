@@ -28,3 +28,14 @@ C:\Users\URICH\Documents\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosE
 C:\Users\URICH\Documents\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.csproj.CoreCompileInputs.cache
 C:\Users\URICH\Documents\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.exe
 C:\Users\URICH\Documents\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.pdb
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.csproj.AssemblyReference.cache
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.csproj.SuggestedBindingRedirects.cache
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.FrmCaminhos.resources
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.Properties.Resources.resources
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.csproj.GenerateResource.cache
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.csproj.CoreCompileInputs.cache
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.exe
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\obj\Debug\apCaminhosEmMarte.pdb
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\bin\Debug\apCaminhosEmMarte.exe.config
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\bin\Debug\apCaminhosEmMarte.exe
+C:\Users\laura\OneDrive\Documentos\GitHub\Caminhos-Marte-\apCaminhosEmMarte\bin\Debug\apCaminhosEmMarte.pdb

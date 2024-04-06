@@ -11,6 +11,8 @@ namespace apCaminhosEmMarte
     public partial class FrmCaminhos : Form
     {
         ITabelaDeHash<Cidade> tabelaDeHash;
+
+        string nomeArq = null;
         public FrmCaminhos()
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace apCaminhosEmMarte
                 if (rbBucketHash.Checked)              tabelaDeHash = new BucketHash<Cidade>();
                 else if (rbSondagemLinear.Checked)     tabelaDeHash = new HashLinear<Cidade>();
                 else if (rbSondagemQuadratica.Checked) tabelaDeHash = new HashQuadratico<Cidade>();
-                //else if (rbHashDuplo.Checked)        tabelaDeHash = new HashDublo<Cidade>();
+                else if (rbHashDuplo.Checked)        tabelaDeHash = new HashDuplo<Cidade>();
 
                 var arqCidades = new StreamReader(dlgAbrir.FileName);
 
@@ -39,7 +41,9 @@ namespace apCaminhosEmMarte
                     tabelaDeHash.Inserir(cidade);
                 }
                 arqCidades.Close();
-                pbMapa.Invalidate(); 
+                pbMapa.Invalidate();
+                nomeArq = dlgAbrir.FileName;
+
             }
             else
             {
@@ -51,15 +55,17 @@ namespace apCaminhosEmMarte
 
         private void FrmCaminhos_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //string arq = null;
-            //StreamWriter sw = new StreamWriter(arq);
+          
+            if (nomeArq != null)
+            {
+                StreamWriter sw = new StreamWriter(nomeArq);
 
-            //if (arq != null) {
-            //    foreach(Cidade item in tabelaDeHash.Conteudo()) {
-            //        item.EscreverRegistro(sw);
-            //    }
-            //    sw.Close();
-            //}
+                foreach (Cidade item in tabelaDeHash.ConteudoTipo())
+                {
+                    item.EscreverRegistro(sw);
+                }
+                sw.Close();
+            }
         }
 
         private void lsbListagem_SelectedIndexChanged(object sender, EventArgs e)
@@ -67,15 +73,15 @@ namespace apCaminhosEmMarte
             
         }
 
-        private void FrmCaminhos_Paint(object sender, PaintEventArgs e)
+        private void pbMapa_Paint(object sender, PaintEventArgs e)
         {
             if (tabelaDeHash != null)
             {
                 Graphics g = e.Graphics;
-                foreach (Cidade cidade in tabelaDeHash.Conteudo())
+                foreach (Cidade cidade in tabelaDeHash.ConteudoTipo())
                 {
-                    double x = (cidade.x * pbMapa.Width) / 4096; // Largura original do mapa
-                    double y = (cidade.y * pbMapa.Height) / 2048; // Altura original do mapa
+                    double x = (cidade.x * pbMapa.Width); // Largura original do mapa
+                    double y = (cidade.y * pbMapa.Height); // Altura original do mapa
 
                     var brush = new SolidBrush(Color.Gray);
                     var pen = new Pen(Color.Black, 1);
@@ -153,6 +159,12 @@ namespace apCaminhosEmMarte
             {
                 lsbListagem.Items.Add(cidade);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Dados();
+            pbMapa.Invalidate();
         }
     }
 }

@@ -97,5 +97,19 @@ public class HashQuadratico<Tipo> : ITabelaDeHash<Tipo>
         
         return dado;
     }
+
+    public List<Tipo> ConteudoTipo()
+    {
+        List<Tipo> conteudo = new List<Tipo>();
+
+        for (int i = 0; i < tamanho; i++)
+        {
+            if (info[i] != null)
+                conteudo.Add(info[i]);
+        }
+        return conteudo;
+    }
+
+
 }
 
